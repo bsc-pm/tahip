@@ -4,47 +4,46 @@
 	Copyright (C) 2021 Barcelona Supercomputing Center (BSC)
 */
 
-#include <cuda_runtime.h>
-#include <TACUDA.h>
+#include <TAHIP.h>
 
 #include "common/Environment.hpp"
 #include "common/TaskingModel.hpp"
 #include "common/util/ErrorHandler.hpp"
 
-using namespace tacuda;
+using namespace tahip;
 
 #pragma GCC visibility push(default)
 
 extern "C" {
 
-cudaError_t
-tacudaWaitRequestAsync(tacudaRequest *request)
+hipError_t
+tahipWaitRequestAsync(tahipRequest *request)
 {
 	assert(request != nullptr);
 
-	if (*request != TACUDA_REQUEST_NULL)
+	if (*request != TAHIP_REQUEST_NULL)
 		RequestManager::processRequest((Request *) *request);
 
-	*request = TACUDA_REQUEST_NULL;
+	*request = TAHIP_REQUEST_NULL;
 
-	return cudaSuccess;
+	return hipSuccess;
 }
 
-cudaError_t
-tacudaWaitallRequestsAsync(size_t count, tacudaRequest requests[])
+hipError_t
+tahipWaitallRequestsAsync(size_t count, tahipRequest requests[])
 {
 	if (count == 0)
-		return cudaSuccess;
+		return hipSuccess;
 
 	assert(requests != nullptr);
 
 	RequestManager::processRequests(count, (Request * const *) requests);
 
 	for (size_t r = 0; r < count; ++r) {
-		requests[r] = TACUDA_REQUEST_NULL;
+		requests[r] = TAHIP_REQUEST_NULL;
 	}
 
-	return cudaSuccess;
+	return hipSuccess;
 }
 
 } // extern C

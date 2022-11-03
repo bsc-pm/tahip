@@ -7,7 +7,7 @@
 #ifndef REQUEST_MANAGER_HPP
 #define REQUEST_MANAGER_HPP
 
-#include <cuda_runtime.h>
+#include <hip/hip_runtime_api.h>
 
 #include <boost/intrusive/list.hpp>
 #include <boost/lockfree/spsc_queue.hpp>
@@ -17,7 +17,7 @@
 #include "util/ErrorHandler.hpp"
 
 
-namespace tacuda {
+namespace tahip {
 
 //! Struct that represents a TACUDA request
 struct Request {
@@ -25,10 +25,10 @@ struct Request {
 	typedef boost::intrusive::list_member_hook<link_mode_t> links_t;
 
 	//! The event of the request
-    cudaEvent_t _event;
+    hipEvent_t _event;
 
 	//! The stream where the operation was posted
-    cudaStream_t _stream;
+    hipStream_t _stream;
 
 	//! The event counter of the calling task
 	void *_eventCounter;
@@ -89,20 +89,20 @@ public:
 	//!
 	//! \param stream The stream to wait
 	//! \param bind Whether should be bound to the current task
-	static Request *generateRequest(cudaStream_t stream, bool bind)
+	static Request *generateRequest(hipStream_t stream, bool bind)
 	{
 		Request *request = Allocator<Request>::allocate();
 		assert(request != nullptr);
 
-		cudaError_t eret;
-		eret = cudaEventCreate(&request->_event); 
-		if (eret != cudaSuccess) {
-			ErrorHandler::fail("Failed in cudaEventCreate: ", eret);
+		hipError_t eret;
+		eret = hipEventCreate(&request->_event);
+		if (eret != hipSuccess) {
+			ErrorHandler::fail("Failed in hipEventCreate: ", eret);
 		}
-        
-		eret = cudaEventRecord(request->_event, stream);
-		if (eret != cudaSuccess) {
-			ErrorHandler::fail("Failed in cudaEventRecord: ", eret);
+
+		eret = hipEventRecord(request->_event, stream);
+		if (eret != hipSuccess) {
+			ErrorHandler::fail("Failed in hipEventRecord: ", eret);
 		}
 
 		// Bind the request to the calling task if needed
@@ -165,23 +165,23 @@ public:
 				}
 			);
 		}
-    
-		cudaError_t eret;
+
+		hipError_t eret;
 
 		auto it = _pendingRequests.begin();
 		while (it != _pendingRequests.end()) {
 			Request &request = *it;
-                
-			eret = cudaEventQuery(request._event);
-			if (eret != cudaSuccess && eret != cudaErrorNotReady) {
-				ErrorHandler::fail("Failed in cudaEventQuery: ", eret);
-			} else if (eret == cudaSuccess) {
+
+			eret = hipEventQuery(request._event);
+			if (eret != hipSuccess && eret != hipErrorNotReady) {
+				ErrorHandler::fail("Failed in hipEventQuery: ", eret);
+			} else if (eret == hipSuccess) {
                 assert(request._eventCounter != nullptr);
 				TaskingModel::decreaseTaskEventCounter(request._eventCounter, 1);
 
-				eret = cudaEventDestroy(request._event);
-				if (eret != cudaSuccess) {
-					ErrorHandler::fail("Failed in cudaEventDestroy: ", eret);
+				eret = hipEventDestroy(request._event);
+				if (eret != hipSuccess) {
+					ErrorHandler::fail("Failed in hipEventDestroy: ", eret);
 				}
 
 				Allocator<Request>::free(&request);
@@ -194,6 +194,6 @@ public:
 	}
 };
 
-} // namespace tacuda
+} // namespace tahip
 
 #endif // REQUEST_MANAGER_HPP

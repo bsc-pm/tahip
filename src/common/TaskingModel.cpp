@@ -11,7 +11,7 @@
 #include "util/ErrorHandler.hpp"
 
 
-namespace tacuda {
+namespace tahip {
 
 void TaskingModel::initialize()
 {
@@ -63,4 +63,4 @@ const std::string TaskingModel::_waitForName("nanos6_wait_for");
 const std::string TaskingModel::_getTotalNumCPUsName("nanos6_get_total_num_cpus");
 const std::string TaskingModel::_getCurrentVirtualCPUName("nanos6_get_current_virtual_cpu");
 
-} // namespace tacuda
+} // namespace tahip

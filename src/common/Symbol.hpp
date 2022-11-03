@@ -13,7 +13,7 @@
 #include "util/ErrorHandler.hpp"
 
 
-namespace tacuda {
+namespace tahip {
 
 //! Class that allows the dynamic loading of symbols at run-time
 class Symbol {
@@ -34,6 +34,6 @@ public:
 	}
 };
 
-} // namespace tacuda
+} // namespace tahip
 
 #endif // SYMBOL_HPP

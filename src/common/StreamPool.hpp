@@ -7,8 +7,7 @@
 #ifndef STREAM_POOL_HPP
 #define STREAM_POOL_HPP
 
-#include <cuda.h>
-#include <cuda_runtime.h>
+#include <hip/hip_runtime_api.h>
 
 #include <cassert>
 #include <vector>
@@ -17,16 +16,16 @@
 #include "util/ErrorHandler.hpp"
 
 
-namespace tacuda {
+namespace tahip {
 
 //! Class that manages the TACUDA streams
 class StreamPool {
 private:
 	//! Array of streams
-	static std::vector<cudaStream_t> _streams;
+	static std::vector<hipStream_t> _streams;
 
 	//! Context of the streams
-	static CUcontext _context;
+	static hipCtx_t _context;
 
 public:
 	//! \brief Initialize the pool of streams
@@ -36,15 +35,15 @@ public:
 	{
 		assert(nstreams > 0);
 
-		CUresult eret = cuCtxGetCurrent(&_context);
-		if (eret != CUDA_SUCCESS)
-			ErrorHandler::fail("Failed in cuCtxGetCurrent: ", eret);
+		hipError_t eret = hipCtxGetCurrent(&_context);
+		if (eret != hipSuccess)
+			ErrorHandler::fail("Failed in hipCtxGetCurrent: ", eret);
 
 		_streams.resize(nstreams);
 		for (size_t s = 0; s < nstreams; ++s) {
-			cudaError_t eret2 = cudaStreamCreate(&_streams[s]);
-			if (eret2 != cudaSuccess)
-				ErrorHandler::fail("Failed in cudaStreamCreate: ", eret2);
+			hipError_t eret2 = hipStreamCreate(&_streams[s]);
+			if (eret2 != hipSuccess)
+				ErrorHandler::fail("Failed in hipStreamCreate: ", eret2);
 		}
 	}
 
@@ -52,27 +51,27 @@ public:
 	static inline void finalize()
 	{
 		for (size_t s = 0; s < _streams.size(); ++s) {
-			cudaError_t eret = cudaStreamDestroy(_streams[s]);
-			if (eret != cudaSuccess)
-				ErrorHandler::fail("Failed in cudaStreamDestroy: ", eret);
+			hipError_t eret = hipStreamDestroy(_streams[s]);
+			if (eret != hipSuccess)
+				ErrorHandler::fail("Failed in hipStreamDestroy: ", eret);
 		}
 	}
 
 	//! \brief Get stream within pool
 	//!
 	//! \param streamId The stream identifier within the pool
-	static inline cudaStream_t getStream(size_t streamId)
+	static inline hipStream_t getStream(size_t streamId)
 	{
 		assert(streamId < _streams.size());
 
-		CUresult eret = cuCtxSetCurrent(_context);
-		if (eret != CUDA_SUCCESS)
-			ErrorHandler::fail("Failed in cuCtxSetCurrent: ", eret);
+		hipError_t eret = hipCtxSetCurrent(_context);
+		if (eret != hipSuccess)
+			ErrorHandler::fail("Failed in hipCtxSetCurrent: ", eret);
 
 		return _streams[streamId];
 	}
 };
 
-} // namespace tacuda
+} // namespace tahip
 
 #endif // STREAM_POOL_HPP

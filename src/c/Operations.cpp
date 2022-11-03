@@ -4,31 +4,30 @@
 	Copyright (C) 2021 Barcelona Supercomputing Center (BSC)
 */
 
-#include <cuda_runtime.h>
-#include <TACUDA.h>
+#include <TAHIP.h>
 
 #include "common/Environment.hpp"
 #include "common/TaskingModel.hpp"
 #include "common/util/ErrorHandler.hpp"
 
-using namespace tacuda;
+using namespace tahip;
 
 #pragma GCC visibility push(default)
 
 extern "C" {
 
-cudaError_t
-tacudaLaunchKernel(
+hipError_t
+tahipLaunchKernel(
     const void* func, dim3 gridDim, dim3 blockDim, 
-    void** args, size_t sharedMem, cudaStream_t stream,
-    tacudaRequest *requestPtr)
+    void** args, size_t sharedMem, hipStream_t stream,
+    tahipRequest *requestPtr)
 {
 
-	cudaError_t eret;
+	hipError_t eret;
     
-	eret = cudaLaunchKernel(func, gridDim, blockDim, args,
+	eret = hipLaunchKernel(func, gridDim, blockDim, args,
 		sharedMem, stream);
-	if (eret != cudaSuccess)
+	if (eret != hipSuccess)
 		return eret;
 
 	Request *request = RequestManager::generateRequest(stream, (requestPtr == nullptr));
@@ -37,7 +36,7 @@ tacudaLaunchKernel(
 	if (requestPtr != nullptr)
 		*requestPtr = request;
 
-	return cudaSuccess;
+	return hipSuccess;
 }
 
 } // extern C

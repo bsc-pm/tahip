@@ -25,7 +25,7 @@
 #endif
 
 
-namespace tacuda {
+namespace tahip {
 namespace util {
 
 //! Class that provides padding for a type
@@ -81,6 +81,6 @@ static inline void spinWait()
 }
 
 } // namespace util
-} // namespace tacuda
+} // namespace tahip
 
 #endif // UTILS_HPP

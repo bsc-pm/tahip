@@ -13,7 +13,7 @@
 
 #include <boost/lockfree/queue.hpp>
 
-namespace tacuda {
+namespace tahip {
 
 template <typename T>
 class Allocator {
@@ -90,6 +90,6 @@ typename Allocator<T>::queue_t* Allocator<T>::_queue = nullptr;
 template <typename T>
 T* Allocator<T>::_objects = nullptr;
 
-} // namespace tacuda
+} // namespace tahip
 
 #endif // ALLOCATOR_HPP

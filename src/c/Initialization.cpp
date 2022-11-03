@@ -4,32 +4,31 @@
 	Copyright (C) 2021 Barcelona Supercomputing Center (BSC)
 */
 
-#include <cuda.h>
-#include <TACUDA.h>
+#include <TAHIP.h>
 
 #include "common/Environment.hpp"
 
-using namespace tacuda;
+using namespace tahip;
 
 #pragma GCC visibility push(default)
 
 extern "C" {
 
-CUresult
-tacudaInit(unsigned int flags)
+hipError_t
+tahipInit(unsigned int flags)
 {
-	CUresult eret = cuInit(flags);
-	if (eret == CUDA_SUCCESS) {
+	hipError_t eret = hipInit(flags);
+	if (eret == hipSuccess) {
 		Environment::initialize();
 	}
 	return eret;
 }
 
-CUresult
-tacudaFinalize()
+hipError_t
+tahipFinalize()
 {
 	Environment::finalize();
-	return CUDA_SUCCESS;
+	return hipSuccess;
 }
 
 } // extern C

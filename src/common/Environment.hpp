@@ -13,7 +13,7 @@
 #include "StreamPool.hpp"
 
 
-namespace tacuda {
+namespace tahip {
 
 //! Class that represents the environment
 class Environment {
@@ -73,6 +73,6 @@ private:
 	}
 };
 
-} // namespace tacuda
+} // namespace tahip
 
 #endif // ENVIRONMENT_HPP

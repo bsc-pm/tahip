@@ -17,7 +17,7 @@
 #include "SpinLock.hpp"
 
 
-namespace tacuda {
+namespace tahip {
 
 //! Class providing the functionality of error handling
 class ErrorHandler {
@@ -150,6 +150,6 @@ public:
 	}
 };
 
-} // namespace tacuda
+} // namespace tahip
 
 #endif // ERROR_HANDLER_HPP

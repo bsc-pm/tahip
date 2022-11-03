@@ -11,7 +11,7 @@
 #include "util/ErrorHandler.hpp"
 
 
-namespace tacuda {
+namespace tahip {
 
 TaskingModel::polling_handle_t Environment::_pollingHandle;
 
@@ -23,10 +23,10 @@ RequestManager::add_queue_t RequestManager::_addQueue;
 SpinLock RequestManager::_addQueueLock;
 RequestManager::list_t RequestManager::_pendingRequests;
 
-std::vector<cudaStream_t> StreamPool::_streams;
-CUcontext StreamPool::_context;
+std::vector<hipStream_t> StreamPool::_streams;
+hipCtx_t StreamPool::_context;
 
-} // namespace tacuda
+} // namespace tahip
 
 #if !defined(NDEBUG)
 namespace boost {

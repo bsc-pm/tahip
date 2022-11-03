@@ -13,7 +13,7 @@
 #include <string>
 
 
-namespace tacuda {
+namespace tahip {
 
 //! Class that represents an environment variable
 template <typename T>
@@ -92,6 +92,6 @@ public:
 	}
 };
 
-} // namespace tacuda
+} // namespace tahip
 
 #endif // ENVIRONMENT_VARIABLE_HPP

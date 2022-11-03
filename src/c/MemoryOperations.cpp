@@ -4,28 +4,27 @@
 	Copyright (C) 2021 Barcelona Supercomputing Center (BSC)
 */
 
-#include <cuda_runtime.h>
-#include <TACUDA.h>
+#include <TAHIP.h>
 
 #include "common/Environment.hpp"
 #include "common/TaskingModel.hpp"
 #include "common/util/ErrorHandler.hpp"
 
-using namespace tacuda;
+using namespace tahip;
 
 #pragma GCC visibility push(default)
 
 extern "C" {
 
-cudaError_t
-tacudaMemcpyAsync(
+hipError_t
+tahipMemcpyAsync(
 	void *dst, const void *src, size_t sizeBytes,
-	enum cudaMemcpyKind kind, cudaStream_t stream,
-	tacudaRequest *requestPtr)
+	enum hipMemcpyKind kind, hipStream_t stream,
+	tahipRequest *requestPtr)
 {
-	cudaError_t eret;
-	eret = cudaMemcpyAsync(dst, src, sizeBytes, kind, stream);
-	if (eret != cudaSuccess)
+	hipError_t eret;
+	eret = hipMemcpyAsync(dst, src, sizeBytes, kind, stream);
+	if (eret != hipSuccess)
 		return eret;
 
 	Request *request = RequestManager::generateRequest(stream, (requestPtr == nullptr));
@@ -34,17 +33,17 @@ tacudaMemcpyAsync(
 	if (requestPtr != nullptr)
 		*requestPtr = request;
 
-	return cudaSuccess;
+	return hipSuccess;
 }
 
-cudaError_t
-tacudaMemsetAsync(
-	void *devPtr, int value, size_t sizeBytes, cudaStream_t stream,
-	tacudaRequest *requestPtr)
+hipError_t
+tahipMemsetAsync(
+	void *devPtr, int value, size_t sizeBytes, hipStream_t stream,
+	tahipRequest *requestPtr)
 {
-	cudaError_t eret;
-	eret = cudaMemsetAsync(devPtr, value, sizeBytes, stream);
-	if (eret != cudaSuccess)
+	hipError_t eret;
+	eret = hipMemsetAsync(devPtr, value, sizeBytes, stream);
+	if (eret != hipSuccess)
 		return eret;
 
 	Request *request = RequestManager::generateRequest(stream, (requestPtr == nullptr));
@@ -53,7 +52,7 @@ tacudaMemsetAsync(
 	if (requestPtr != nullptr)
 		*requestPtr = request;
 
-	return cudaSuccess;
+	return hipSuccess;
 }
 
 } // extern C

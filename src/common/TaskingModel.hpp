@@ -21,7 +21,7 @@
 #include "util/ErrorHandler.hpp"
 
 
-namespace tacuda {
+namespace tahip {
 
 //! Class that gives access to the tasking model features
 class TaskingModel {
@@ -220,7 +220,7 @@ private:
 	}
 };
 
-} // namespace tacuda
+} // namespace tahip
 
 #endif // TASKING_MODEL_HPP
 

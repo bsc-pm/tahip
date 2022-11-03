@@ -12,7 +12,7 @@
 #include "Utils.hpp"
 
 
-namespace tacuda {
+namespace tahip {
 
 //! Class that implements a ticket array spinlock that focuses on
 //! avoiding the overhead when there are many threads trying to
@@ -69,6 +69,6 @@ public:
 	}
 };
 
-} // namespace tacuda
+} // namespace tahip
 
 #endif // SPIN_LOCK_HPP

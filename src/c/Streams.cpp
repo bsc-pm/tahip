@@ -4,62 +4,61 @@
 	Copyright (C) 2021 Barcelona Supercomputing Center (BSC)
 */
 
-#include <cuda_runtime.h>
-#include <TACUDA.h>
+#include <TAHIP.h>
 
 #include "common/StreamPool.hpp"
 #include "common/Environment.hpp"
 #include "common/TaskingModel.hpp"
 #include "common/util/ErrorHandler.hpp"
 
-using namespace tacuda;
+using namespace tahip;
 
 #pragma GCC visibility push(default)
 
 extern "C" {
 
-cudaError_t
-tacudaCreateStreams(size_t count)
+hipError_t
+tahipCreateStreams(size_t count)
 {
-	if (count == TACUDA_STREAMS_AUTO)
+	if (count == TAHIP_STREAMS_AUTO)
 		count = TaskingModel::getNumCPUs();
 	assert(count > 0);
 
 	StreamPool::initialize(count);
 
-	return cudaSuccess;
+	return hipSuccess;
 }
 
-cudaError_t
-tacudaDestroyStreams()
+hipError_t
+tahipDestroyStreams()
 {
 	StreamPool::finalize();
 
-	return cudaSuccess;
+	return hipSuccess;
 }
 
-cudaError_t
-tacudaGetStream(cudaStream_t *stream)
+hipError_t
+tahipGetStream(hipStream_t *stream)
 {
 	assert(stream != nullptr);
 
 	*stream = StreamPool::getStream(TaskingModel::getCurrentCPU());
 
-	return cudaSuccess;
+	return hipSuccess;
 }
 
-cudaError_t
-tacudaReturnStream(cudaStream_t)
+hipError_t
+tahipReturnStream(hipStream_t)
 {
-	return cudaSuccess;
+	return hipSuccess;
 }
 
-cudaError_t
-tacudaSynchronizeStreamAsync(cudaStream_t stream)
+hipError_t
+tahipSynchronizeStreamAsync(hipStream_t stream)
 {
 	RequestManager::generateRequest(stream, true);
 
-	return cudaSuccess;
+	return hipSuccess;
 }
 
 } // extern C

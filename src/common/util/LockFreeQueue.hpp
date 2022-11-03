@@ -22,7 +22,7 @@
 #include "SpinLock.hpp"
 
 
-namespace tacuda {
+namespace tahip {
 namespace util {
 
 //! Class that provides the functionality of a lock free queue
@@ -97,6 +97,6 @@ public:
 };
 
 } // namespace util
-} // namespace tacuda
+} // namespace tahip
 
 #endif // LOCK_FREE_QUEUE_HPP

@@ -21,16 +21,16 @@ AC_DEFUN([AX_COMPILE_FLAGS], [
 
 	AS_IF([test "$enable_debug_mode" = yes],[
 		# Debug mode is enabled
-		tacuda_CPPFLAGS=""
-		tacuda_CXXFLAGS="-Wall -Wextra -Wshadow -fvisibility=hidden -O0 -g3"
+		tahip_CPPFLAGS=""
+		tahip_CXXFLAGS="-Wall -Wextra -Wshadow -fvisibility=hidden -O0 -g3"
 	],[
 		# Debug mode is not enabled
-		tacuda_CPPFLAGS="-DNDEBUG"
-		tacuda_CXXFLAGS="-Wall -Wextra -Wshadow -fvisibility=hidden -O3"
+		tahip_CPPFLAGS="-DNDEBUG"
+		tahip_CXXFLAGS="-Wall -Wextra -Wshadow -fvisibility=hidden -O3"
 	])
 
-	AC_SUBST(tacuda_CPPFLAGS)
-	AC_SUBST(tacuda_CXXFLAGS)
+	AC_SUBST(tahip_CPPFLAGS)
+	AC_SUBST(tahip_CXXFLAGS)
 
 	# Disable autoconf default compilation flags
 	: ${CPPFLAGS=""}

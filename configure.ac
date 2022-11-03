@@ -1,12 +1,12 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-#	This file is part of Task-Aware CUDA and is licensed under the terms contained in the COPYING and COPYING.LESSER files.
+#	This file is part of Task-Aware HIP and is licensed under the terms contained in the COPYING and COPYING.LESSER files.
 #
 #	Copyright (C) 2021 Barcelona Supercomputing Center (BSC)
 
 AC_PREREQ([2.69])
-AC_INIT([tacuda], [1.0.0], [pm-tools@bsc.es])
+AC_INIT([tahip], [1.0.0], [pm-tools@bsc.es])
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([src])
@@ -32,8 +32,9 @@ AM_SILENT_RULES([yes])
 # Checks for header files.
 AC_CHECK_HEADERS([unistd.h])
 
-# Check for CUDA
-AX_CHECK_CUDA
+# Check for HIP
+AX_CHECK_HIP
+AX_CHECK_HIPBLAS
 
 # Personalize the installation prefix
 AC_ARG_WITH(prefix,
@@ -70,11 +71,14 @@ echo "    Compiler version... ${CXX_VERSION}"
 echo ""
 echo "    Installation prefix... ${prefix}"
 echo ""
-echo "    CUDA CPPFLAGS... ${cudainc}"
-echo "    CUDA LDFLAGS... ${cudalibs} ${cudalib}"
+echo "    HIP CPPFLAGS... ${hipflags} ${hipinc}"
+echo "    HIP LDFLAGS... ${hiplibs} ${hiplib}"
 echo ""
-echo "    CXXFLAGS... ${tacuda_CXXFLAGS} ${CXXFLAGS}"
-echo "    CPPFLAGS... ${tacuda_CPPFLAGS} ${CPPFLAGS}"
+echo "    hipBLAS CPPFLAGS... ${hipblasinc}"
+echo "    hipBLAS LDFLAGS... ${hipblaslibs} ${hipblaslib}"
+echo ""
+echo "    CXXFLAGS... ${tahip_CXXFLAGS} ${CXXFLAGS}"
+echo "    CPPFLAGS... ${tahip_CPPFLAGS} ${CPPFLAGS}"
 echo ""
 echo "    Boost CPPFLAGS... ${BOOST_CPPFLAGS}"
 echo "    Boost LDFLAGS... ${BOOST_LDFLAGS}"
