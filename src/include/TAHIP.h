@@ -1,5 +1,5 @@
 /*
-	This file is part of Task-Aware CUDA and is licensed under the terms contained in the COPYING and COPYING.LESSER files.
+	This file is part of Task-Aware HIP and is licensed under the terms contained in the COPYING and COPYING.LESSER files.
 
 	Copyright (C) 2021 Barcelona Supercomputing Center (BSC)
 */
@@ -27,7 +27,7 @@ static const size_t TAHIP_STREAMS_AUTO = 0;
 
 //! \brief Initialization
 //!
-//! Initializes the TAHIP environment and the CUDA driver API
+//! Initializes the TAHIP environment and the HIP driver API
 hipError_t
 tahipInit(unsigned int flags);
 
@@ -65,7 +65,7 @@ hipError_t
 tahipSynchronizeStreamAsync(hipStream_t stream);
 
 
-//! The following four functions are wrapper functions for some CUDA asynchronous operations.
+//! The following four functions are wrapper functions for some HIP asynchronous operations.
 //! Apart form their standard behaviour, they also return a TAHIP request.
 //! 	- If the request pointer parameter is not NULL, TAHIP generates a tahipRequest and saves a
 //! 	pointer to it in the output parameter after executing the corresponding operation.

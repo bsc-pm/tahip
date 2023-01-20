@@ -1,5 +1,5 @@
 /*
-	This file is part of Task-Aware CUDA and is licensed under the terms contained in the COPYING and COPYING.LESSER files.
+	This file is part of Task-Aware HIP and is licensed under the terms contained in the COPYING and COPYING.LESSER files.
 
 	Copyright (C) 2021 Barcelona Supercomputing Center (BSC)
 */
@@ -19,14 +19,14 @@ namespace tahip {
 class Environment {
 private:
 	//! The handle to the polling instance that periodically checks
-	//! the completion of the TACUDA requests and events
+	//! the completion of the TAHIP requests and events
 	static TaskingModel::polling_handle_t _pollingHandle;
 
-	//! Determine the polling frequency when the TACUDA polling is
+	//! Determine the polling frequency when the TAHIP polling is
 	//! implemented with tasks that are paused periodically. That is
 	//! the frequency in time (microseconds) at which the in-flight
-	//! TACUDA requests and events are checked in TACUDA. This environment
-	//! variable is called TACUDA_POLLING_FREQUENCY and the default value
+	//! TAHIP requests and events are checked in TAHIP. This environment
+	//! variable is called TAHIP_POLLING_FREQUENCY and the default value
 	//! is 500 microseconds
 	static EnvironmentVariable<uint64_t> _pollingFrequency;
 
@@ -35,7 +35,7 @@ public:
 	Environment(const Environment &) = delete;
 	const Environment& operator= (const Environment &) = delete;
 
-	//! \brief Initialize the environment of TACUDA
+	//! \brief Initialize the environment of TAHIP
 	//!
 	//! This function should be called after a successful call to
 	//! the original cuInit function
@@ -46,13 +46,13 @@ public:
 		Allocator<Request>::initialize();
 
 		assert(!_pollingHandle);
-		_pollingHandle = TaskingModel::registerPolling("TACUDA", Environment::polling, nullptr, _pollingFrequency);
+		_pollingHandle = TaskingModel::registerPolling("TAHIP", Environment::polling, nullptr, _pollingFrequency);
 	}
 
-	//! \brief Finalize the environment of TACUDA
+	//! \brief Finalize the environment of TAHIP
 	//!
 	//! This function should be called before finalizing
-	//! the program and after any CUDA function
+	//! the program and after any HIP function
 	static void finalize()
 	{
 		TaskingModel::unregisterPolling(_pollingHandle);
@@ -64,7 +64,7 @@ private:
 	//! \brief Polling function that checks the requests and events
 	//!
 	//! This function is periodically called by the tasking runtime
-	//! system and should check for the TACUDA requests and events
+	//! system and should check for the TAHIP requests and events
 	//!
 	//! \param args An opaque pointer to the arguments
 	static void polling(void *)

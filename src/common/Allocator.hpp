@@ -1,5 +1,5 @@
 /*
-	This file is part of Task-Aware CUDA and is licensed under the terms contained in the COPYING and COPYING.LESSER files.
+	This file is part of Task-Aware HIP and is licensed under the terms contained in the COPYING and COPYING.LESSER files.
 
 	Copyright (C) 2021 Barcelona Supercomputing Center (BSC)
 */

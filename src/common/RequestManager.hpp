@@ -1,5 +1,5 @@
 /*
-	This file is part of Task-Aware CUDA and is licensed under the terms contained in the COPYING and COPYING.LESSER files.
+	This file is part of Task-Aware HIP and is licensed under the terms contained in the COPYING and COPYING.LESSER files.
 
 	Copyright (C) 2021 Barcelona Supercomputing Center (BSC)
 */
@@ -19,7 +19,7 @@
 
 namespace tahip {
 
-//! Struct that represents a TACUDA request
+//! Struct that represents a TAHIP request
 struct Request {
 	typedef boost::intrusive::link_mode<boost::intrusive::normal_link> link_mode_t;
 	typedef boost::intrusive::list_member_hook<link_mode_t> links_t;
@@ -43,7 +43,7 @@ struct Request {
 };
 
 
-//! Class that manages the TACUDA requests
+//! Class that manages the TAHIP requests
 class RequestManager {
 private:
 	typedef boost::lockfree::spsc_queue<Request*, boost::lockfree::capacity<63*1024> > add_queue_t;
@@ -59,7 +59,7 @@ private:
 	//! List of pending requests
 	static list_t _pendingRequests;
 
-	//! \brief Add a TACUDA request
+	//! \brief Add a TAHIP request
 	//!
 	//! \param request The request to add
 	static void addRequest(Request *request)
@@ -71,7 +71,7 @@ private:
 		_addQueueLock.unlock();
 	}
 
-	//! \brief Add multiple TACUDA requests
+	//! \brief Add multiple TAHIP requests
 	//!
 	//! \param requests The requests to add
 	static void addRequests(size_t count, Request *const requests[])
@@ -85,7 +85,7 @@ private:
 	}
 
 public:
-	//! \brief Generate a TACUDA request waiting for stream completion
+	//! \brief Generate a TAHIP request waiting for stream completion
 	//!
 	//! \param stream The stream to wait
 	//! \param bind Whether should be bound to the current task

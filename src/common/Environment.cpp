@@ -1,5 +1,5 @@
 /*
-	This file is part of Task-Aware CUDA and is licensed under the terms contained in the COPYING and COPYING.LESSER files.
+	This file is part of Task-Aware HIP and is licensed under the terms contained in the COPYING and COPYING.LESSER files.
 
 	Copyright (C) 2021 Barcelona Supercomputing Center (BSC)
 */
@@ -15,7 +15,7 @@ namespace tahip {
 
 TaskingModel::polling_handle_t Environment::_pollingHandle;
 
-EnvironmentVariable<uint64_t> Environment::_pollingFrequency("TACUDA_POLLING_FREQUENCY", 500);
+EnvironmentVariable<uint64_t> Environment::_pollingFrequency("TAHIP_POLLING_FREQUENCY", 500);
 
 SpinLock ErrorHandler::_lock;
 
