@@ -28,7 +28,7 @@ AS_IF([test "x$with_hipblas_lib" != x],[
 
 # Tests if provided headers and libraries are usable and correct
 # Check headers using hipconfig flags
-AX_VAR_PUSHVALUE([CPPFLAGS],[$CPPFLAGS $hipflags])
+AX_VAR_PUSHVALUE([CPPFLAGS],[$CPPFLAGS $hipblasinc $hipflags])
 AX_VAR_PUSHVALUE([CFLAGS])
 AX_VAR_PUSHVALUE([LDFLAGS],[$LDFLAGS $hipblaslib])
 AX_VAR_PUSHVALUE([LIBS],[])
@@ -66,6 +66,7 @@ Please, check that the provided directories are correct.
 ])
 
 AC_SUBST([hipblasinc])
+AC_SUBST([hipblaslib])
 AC_SUBST([hipblaslibs])
 
 ])dnl AX_CHECK_HIPBLAS
