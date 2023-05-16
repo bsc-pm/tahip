@@ -8,7 +8,6 @@
 #define TAHIP_H
 
 #include <hipblas.h>
-#include <hipsparse.h>
 #include <hip/hip_runtime_api.h>
 
 #include <stddef.h>
