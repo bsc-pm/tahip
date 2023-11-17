@@ -4,11 +4,11 @@
 	Copyright (C) 2021 Barcelona Supercomputing Center (BSC)
 */
 
+#include <cassert>
+
 #include <TAHIP.h>
 
-#include "common/Environment.hpp"
-#include "common/TaskingModel.hpp"
-#include "common/util/ErrorHandler.hpp"
+#include "common/RequestManager.hpp"
 
 using namespace tahip;
 

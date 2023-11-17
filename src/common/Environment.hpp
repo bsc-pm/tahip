@@ -18,9 +18,9 @@ namespace tahip {
 //! Class that represents the environment
 class Environment {
 private:
-	//! The handle to the polling instance that periodically checks
-	//! the completion of the TAHIP requests and events
-	static TaskingModel::polling_handle_t _pollingHandle;
+	//! The polling instance that periodically checks the completion of the TAHIP
+	//! requests and events
+	static TaskingModel::PollingInstance *_pollingInstance;
 
 	//! Determine the polling frequency when the TAHIP polling is
 	//! implemented with tasks that are paused periodically. That is
@@ -45,8 +45,8 @@ public:
 
 		Allocator<Request>::initialize();
 
-		assert(!_pollingHandle);
-		_pollingHandle = TaskingModel::registerPolling("TAHIP", Environment::polling, nullptr, _pollingFrequency);
+		assert(!_pollingInstance);
+		_pollingInstance = TaskingModel::registerPolling("TAHIP", Environment::polling, nullptr, _pollingFrequency);
 	}
 
 	//! \brief Finalize the environment of TAHIP
@@ -55,7 +55,7 @@ public:
 	//! the program and after any HIP function
 	static void finalize()
 	{
-		TaskingModel::unregisterPolling(_pollingHandle);
+		TaskingModel::unregisterPolling(_pollingInstance);
 
 		Allocator<Request>::finalize();
 	}

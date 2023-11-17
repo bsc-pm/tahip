@@ -1,15 +1,14 @@
 /*
 	This file is part of Task-Aware HIP and is licensed under the terms contained in the COPYING and COPYING.LESSER files.
 
-	Copyright (C) 2021 Barcelona Supercomputing Center (BSC)
+	Copyright (C) 2021-2023 Barcelona Supercomputing Center (BSC)
 */
 
 #include <TAHIP.h>
 
+#include "common/RequestManager.hpp"
 #include "common/StreamPool.hpp"
-#include "common/Environment.hpp"
 #include "common/TaskingModel.hpp"
-#include "common/util/ErrorHandler.hpp"
 
 using namespace tahip;
 

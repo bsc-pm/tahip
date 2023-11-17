@@ -1,7 +1,7 @@
 /*
 	This file is part of Task-Aware HIP and is licensed under the terms contained in the COPYING and COPYING.LESSER files.
 
-	Copyright (C) 2021 Barcelona Supercomputing Center (BSC)
+	Copyright (C) 2021-2023 Barcelona Supercomputing Center (BSC)
 */
 
 #include <cstdio>
@@ -13,7 +13,7 @@
 
 namespace tahip {
 
-TaskingModel::polling_handle_t Environment::_pollingHandle;
+TaskingModel::PollingInstance *Environment::_pollingInstance;
 
 EnvironmentVariable<uint64_t> Environment::_pollingFrequency("TAHIP_POLLING_FREQUENCY", 500);
 

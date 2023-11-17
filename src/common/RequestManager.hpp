@@ -14,6 +14,8 @@
 
 #include <cassert>
 
+#include "Allocator.hpp"
+#include "TaskingModel.hpp"
 #include "util/ErrorHandler.hpp"
 
 
@@ -30,14 +32,13 @@ struct Request {
 	//! The stream where the operation was posted
     hipStream_t _stream;
 
-	//! The event counter of the calling task
-	void *_eventCounter;
+	//! The calling task's handle
+	TaskingModel::task_handle_t _task;
 
 	//! Support for Boost intrusive lists
 	links_t _listLinks;
 
-	inline Request() :
-		_eventCounter(nullptr)
+	inline Request() : _task(nullptr)
 	{
 	}
 };
@@ -107,12 +108,12 @@ public:
 
 		// Bind the request to the calling task if needed
 		if (bind) {
-			void *counter = TaskingModel::getCurrentEventCounter();
-			assert(counter != nullptr);
+			TaskingModel::task_handle_t task = TaskingModel::getCurrentTask();
+			assert(task != nullptr);
 
-			request->_eventCounter = counter;
+			request->_task = task;
 
-			TaskingModel::increaseCurrentTaskEventCounter(counter, 1);
+			TaskingModel::increaseCurrentTaskEvents(task, 1);
 
 			RequestManager::addRequest(request);
 		}
@@ -122,14 +123,14 @@ public:
 	static void processRequest(Request *request)
 	{
 		assert(request != nullptr);
-		assert(request->_eventCounter == nullptr);
+		assert(request->_task == nullptr);
 
-		void *counter = TaskingModel::getCurrentEventCounter();
-		assert(counter != nullptr);
+		TaskingModel::task_handle_t task = TaskingModel::getCurrentTask();
+		assert(task != nullptr);
 
-		request->_eventCounter = counter;
+		request->_task = task;
 
-		TaskingModel::increaseCurrentTaskEventCounter(counter, 1);
+		TaskingModel::increaseCurrentTaskEvents(task, 1);
 
 		addRequest(request);
 	}
@@ -139,18 +140,18 @@ public:
 		assert(count > 0);
 		assert(requests != nullptr);
 
-		void *counter = TaskingModel::getCurrentEventCounter();
-		assert(counter != nullptr);
+		TaskingModel::task_handle_t task = TaskingModel::getCurrentTask();
+		assert(task != nullptr);
 
 		size_t nactive = 0;
 		for (size_t r = 0; r < count; ++r) {
 			if (requests[r] != nullptr) {
-				assert(requests[r]->_eventCounter == nullptr);
-				requests[r]->_eventCounter = counter;
+				assert(requests[r]->_task == nullptr);
+				requests[r]->_task = task;
 				++nactive;
 			}
 		}
-		TaskingModel::increaseCurrentTaskEventCounter(counter, nactive);
+		TaskingModel::increaseCurrentTaskEvents(task, nactive);
 
 		addRequests(count, requests);
 	}
@@ -176,8 +177,8 @@ public:
 			if (eret != hipSuccess && eret != hipErrorNotReady) {
 				ErrorHandler::fail("Failed in hipEventQuery: ", eret);
 			} else if (eret == hipSuccess) {
-                assert(request._eventCounter != nullptr);
-				TaskingModel::decreaseTaskEventCounter(request._eventCounter, 1);
+                assert(request._task != nullptr);
+				TaskingModel::decreaseTaskEvents(request._task, 1);
 
 				eret = hipEventDestroy(request._event);
 				if (eret != hipSuccess) {

@@ -37,12 +37,12 @@ common_sources = \
  src/common/TaskingModel.cpp
 
 noinst_HEADERS = \
+ src/common/ALPI.hpp \
  src/common/Allocator.hpp \
  src/common/Environment.hpp \
  src/common/RequestManager.hpp \
  src/common/StreamPool.hpp \
  src/common/Symbol.hpp \
- src/common/TaskingModelAPI.hpp \
  src/common/TaskingModel.hpp \
  src/common/util/EnvironmentVariable.hpp \
  src/common/util/ErrorHandler.hpp \

@@ -63,11 +63,20 @@ Once TAHIP is built and installed, e.g, in $TAHIP_HOME, the installation folder 
 ## Requirements
 In order to install the TAHIP library, the main requirements are the following:
 
-- Automake, autoconf, libtool, make and a C and C++ compiler.
-- HIP
-- hipBLAS
-- Boost library 1.59 or greater
-- OmpSs-2 (version 2018.11 or greater)
-- ...
+* Automake, autoconf, libtool, make and a C and C++ compiler
+* [HIP](https://github.com/ROCm-Developer-Tools/HIP) and hipBLAS
+* [boost](http://boost.org) >= 1.59
+* One of the following parallel task-based programming models (required when compiling a user application):
+	- [OmpSs-2](https://github.com/bsc-pm/ompss-2-releases) (version 2023.11 or greater)
+	- The derivative implementation of [LLVM/OpenMP](https://github.com/bsc-pm/llvm)
 
 The hipBLAS API is not essential to the library, so if the user does the proper changes to the Makefile.am file (basically removing or commenting all the lines containing `src/c/hipBLASOperations.cpp` and a few compiler flags) it can be compiled and installed without it.
+
+## ALPI Tasking Interface
+
+The Task-Aware CUDA library relies on the [ALPI](https://gitlab.bsc.es/alpi/alpi) interface to communicate with
+the underlying tasking runtime system. This interface is internally used by TACUDA to spawn internal tasks, to
+block user tasks, or add external events to them.
+
+The required interface is ALPI 1.0 (or any compatible) and it is included in the [ALPI.hpp](src/common/ALPI.hpp)
+header. Any tasking runtime system can support this TACUDA library by providing support to this interface version.
